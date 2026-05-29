@@ -2,21 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 project(QtAdvancedDockingSystem LANGUAGES CXX VERSION ${VERSION_SHORT})
 include(GNUInstallDirs)
 include(Versioning)
-if (${QT_VERSION_MAJOR})
-  message(STATUS "Forced to use Qt version ${QT_VERSION_MAJOR}")
-  find_package(QT NAMES Qt${QT_VERSION_MAJOR} COMPONENTS Core REQUIRED)
-else()
-  find_package(QT NAMES Qt6 Qt5 COMPONENTS Core REQUIRED)
-endif()
-
-set(ads_DEP_LIBS Core Gui Widgets)
-if (UNIX AND NOT APPLE AND QT_VERSION_MAJOR STREQUAL "6" AND QT_VERSION_MINOR GREATER 8)
-    set(ads_DEP_LIBS Core Gui GuiPrivate Widgets)
-endif()
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS ${ads_DEP_LIBS} REQUIRED)
-if (UNIX AND NOT APPLE AND ((QT_VERSION_MAJOR STREQUAL "6" AND QT_VERSION_MINOR GREATER 8) OR QT_VERSION_MAJOR STREQUAL "5"))
-     include_directories(${Qt${QT_VERSION_MAJOR}Gui_PRIVATE_INCLUDE_DIRS})
-endif()
+find_package(CopperSpice REQUIRED COMPONENTS Core Gui Xml)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 if(BUILD_STATIC)
@@ -73,12 +59,12 @@ set(ads_HEADERS
     ResizeHandle.h
 )
 add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
-if (UNIX AND NOT APPLE)
-    set(ads_SRCS linux/FloatingWidgetTitleBar.cpp ${ads_SRCS})
-    set(ads_HEADERS linux/FloatingWidgetTitleBar.h ${ads_HEADERS})
-endif()
 
-set(library_name "qtadvanceddocking-qt${QT_VERSION_MAJOR}")
+ads_collect_generated_sources(ads_generated_sources ${ads_SRCS})
+list(REMOVE_ITEM ads_SRCS ads.qrc)
+list(APPEND ads_SRCS ${ads_generated_sources})
+
+set(library_name "qtadvanceddocking-copperspice")
 if(BUILD_STATIC)
     add_library(${library_name} STATIC ${ads_SRCS} ${ads_HEADERS})
     target_compile_definitions( ${library_name} PUBLIC ADS_STATIC)
@@ -92,25 +78,12 @@ endif()
 
 add_library(ads::${library_name} ALIAS ${library_name})
 
-target_link_libraries(${library_name} PUBLIC Qt${QT_VERSION_MAJOR}::Core 
-                                               Qt${QT_VERSION_MAJOR}::Gui 
-                                               Qt${QT_VERSION_MAJOR}::Widgets)
-
-if(UNIX AND NOT APPLE AND QT_VERSION_MAJOR STREQUAL "6")
-    target_link_libraries(${library_name} PRIVATE Qt6::GuiPrivate) #needed for <qpa/qplatformnativeinterface.h>
-endif()
-
-if (UNIX AND NOT APPLE)
-  if (${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
-      find_package(X11 REQUIRED)
-      target_link_libraries(${library_name} PUBLIC X11::xcb)
-  else()
-    target_link_libraries(${library_name} PUBLIC xcb)
-  endif()
-endif()
+target_link_libraries(${library_name} PUBLIC CopperSpice::CsCore
+                                              CopperSpice::CsGui
+                                       PRIVATE CopperSpice::CsXml)
 set_target_properties(${library_name} PROPERTIES
-    AUTOMOC ON
-    AUTORCC ON
+    CXX_STANDARD 20
+    CXX_STANDARD_REQUIRED ON
     CXX_EXTENSIONS OFF
     VERSION ${VERSION_SHORT}
     SOVERSION ${VERSION_SONAME}
@@ -120,15 +93,6 @@ set_target_properties(${library_name} PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${ads_PlatformDir}/lib"
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${ads_PlatformDir}/bin"
 )
-if(QT_VERSION_MAJOR STREQUAL "5")
-    set_target_properties(${library_name} PROPERTIES
-        CXX_STANDARD 14
-        CXX_STANDARD_REQUIRED ON)
-elseif(QT_VERSION_MAJOR STREQUAL "6")
-    set_target_properties(${library_name} PROPERTIES
-        CXX_STANDARD 17
-        CXX_STANDARD_REQUIRED ON)
-endif()
 
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file(
@@ -169,4 +133,5 @@ install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${library_name}ConfigVersion.cmake"
 target_include_directories(${library_name} PUBLIC
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
 )
