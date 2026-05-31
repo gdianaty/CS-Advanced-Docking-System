@@ -52,17 +52,21 @@ class IFloatingWidget;
  */
 class ADS_EXPORT CDockAreaTabBar : public QScrollArea
 {
-	Q_OBJECT
+	CS_OBJECT(CDockAreaTabBar)
 private:
 	DockAreaTabBarPrivate* d; ///< private data (pimpl)
 	friend struct DockAreaTabBarPrivate;
 	friend class CDockAreaTitleBar;
 
-private Q_SLOTS:
-	void onTabClicked();
-	void onTabCloseRequested();
-	void onCloseOtherTabsRequested();
-	void onTabWidgetMoved(const QPoint& GlobalPos);
+private :
+	CS_SLOT_1(Private, void onTabClicked())
+	CS_SLOT_2(onTabClicked) 
+	CS_SLOT_1(Private, void onTabCloseRequested())
+	CS_SLOT_2(onTabCloseRequested) 
+	CS_SLOT_1(Private, void onCloseOtherTabsRequested())
+	CS_SLOT_2(onCloseOtherTabsRequested) 
+	CS_SLOT_1(Private, void onTabWidgetMoved(const QPoint & GlobalPos))
+	CS_SLOT_2(onTabWidgetMoved) 
 
 protected:
     virtual void wheelEvent(QWheelEvent* Event) override;
@@ -158,74 +162,86 @@ public:
 	 */
 	bool areTabsOverflowing() const;
 
-public Q_SLOTS:
+public :
 	/**
 	 * This property sets the index of the tab bar's visible tab
 	 */
-	void setCurrentIndex(int Index);
+	CS_SLOT_1(Public, void setCurrentIndex(int Index))
+	CS_SLOT_2(setCurrentIndex) 
 
 	/**
 	 * This function will close the tab given in Index param.
 	 * Closing a tab means, the tab will be hidden, it will not be removed
 	 */
-	void closeTab(int Index);
+	CS_SLOT_1(Public, void closeTab(int Index))
+	CS_SLOT_2(closeTab) 
 
-Q_SIGNALS:
+public:
     /**
      * This signal is emitted when the tab bar's current tab is about to be changed. The new
      * current has the given index, or -1 if there isn't a new one.
      */
-	void currentChanging(int Index);
+	CS_SIGNAL_1(Public, void currentChanging(int Index))
+	CS_SIGNAL_2(currentChanging,Index) 
 
 	/**
 	 * This signal is emitted when the tab bar's current tab changes. The new
 	 * current has the given index, or -1 if there isn't a new one
 	 */
-	void currentChanged(int Index);
+	CS_SIGNAL_1(Public, void currentChanged(int Index))
+	CS_SIGNAL_2(currentChanged,Index) 
 
 	/**
 	 * This signal is emitted when user clicks on a tab
 	 */
-	void tabBarClicked(int index);
+	CS_SIGNAL_1(Public, void tabBarClicked(int index))
+	CS_SIGNAL_2(tabBarClicked,index) 
 
 	/**
 	 * This signal is emitted when the close button on a tab is clicked.
 	 * The index is the index that should be closed.
 	 */
-	void tabCloseRequested(int index);
+	CS_SIGNAL_1(Public, void tabCloseRequested(int index))
+	CS_SIGNAL_2(tabCloseRequested,index) 
 
 	/**
 	 * This signal is emitted if a tab has been closed
 	 */
-	void tabClosed(int index);
+	CS_SIGNAL_1(Public, void tabClosed(int index))
+	CS_SIGNAL_2(tabClosed,index) 
 
 	/**
 	 * This signal is emitted if a tab has been opened.
 	 * A tab is opened if it has been made visible
 	 */
-	void tabOpened(int index);
+	CS_SIGNAL_1(Public, void tabOpened(int index))
+	CS_SIGNAL_2(tabOpened,index) 
 
 	/**
 	 * This signal is emitted when the tab has moved the tab at index position
 	 * from to index position to.
 	 */
-	void tabMoved(int from, int to);
+	CS_SIGNAL_1(Public, void tabMoved(int from,int to))
+	CS_SIGNAL_2(tabMoved,from,to) 
 
 	/**
 	 * This signal is emitted, just before the tab with the given index is
 	 * removed
 	 */
-	void removingTab(int index);
+	CS_SIGNAL_1(Public, void removingTab(int index))
+	CS_SIGNAL_2(removingTab,index) 
 
 	/**
 	 * This signal is emitted if a tab has been inserted
 	 */
-	void tabInserted(int index);
+	CS_SIGNAL_1(Public, void tabInserted(int index))
+	CS_SIGNAL_2(tabInserted,index) 
 
 	/**
 	 * This signal is emitted when a tab title elide state has been changed
 	 */
-	void elidedChanged(bool elided);
+	CS_SIGNAL_1(Public, void elidedChanged(bool elided))
+	CS_SIGNAL_2(elidedChanged,elided) 
 }; // class CDockAreaTabBar
 } // namespace ads
 //-----------------------------------------------------------------------------

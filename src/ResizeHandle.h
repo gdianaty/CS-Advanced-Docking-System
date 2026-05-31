@@ -22,9 +22,10 @@ struct ResizeHandlePrivate;
  */
 class ADS_EXPORT CResizeHandle : public QFrame
 {
-	Q_OBJECT
+	CS_OBJECT(CResizeHandle)
 	Q_DISABLE_COPY(CResizeHandle)
-    Q_PROPERTY(bool opaqueResize READ opaqueResize WRITE setOpaqueResize)
+    CS_PROPERTY_READ(opaqueResize, opaqueResize)
+    CS_PROPERTY_WRITE(opaqueResize, setOpaqueResize)
 private:
 	ResizeHandlePrivate* d; ///< private data (pimpl)
 	friend struct ResizeHandlePrivate;

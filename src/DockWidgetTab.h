@@ -51,9 +51,12 @@ class CDockManager;
  */
 class ADS_EXPORT CDockWidgetTab : public QFrame
 {
-	Q_OBJECT
-	Q_PROPERTY(bool activeTab READ isActiveTab WRITE setActiveTab NOTIFY activeTabChanged)
-	Q_PROPERTY(QSize iconSize READ iconSize WRITE setIconSize)
+	CS_OBJECT(CDockWidgetTab)
+	CS_PROPERTY_READ(activeTab, isActiveTab)
+	CS_PROPERTY_WRITE(activeTab, setActiveTab)
+	CS_PROPERTY_NOTIFY(activeTab, activeTabChanged)
+	CS_PROPERTY_READ(iconSize, iconSize)
+	CS_PROPERTY_WRITE(iconSize, setIconSize)
 
 private:
 	DockWidgetTabPrivate* d; ///< private data (pimpl)
@@ -63,10 +66,13 @@ private:
 	friend class CAutoHideDockContainer;
 	void onDockWidgetFeaturesChanged();
 
-private Q_SLOTS:
-	void detachDockWidget();
-	void autoHideDockWidget();
-	void onAutoHideToActionClicked();
+private :
+	CS_SLOT_1(Private, void detachDockWidget())
+	CS_SLOT_2(detachDockWidget) 
+	CS_SLOT_1(Private, void autoHideDockWidget())
+	CS_SLOT_2(autoHideDockWidget) 
+	CS_SLOT_1(Private, void onAutoHideToActionClicked())
+	CS_SLOT_2(onAutoHideToActionClicked) 
 
 protected:
 	virtual void mousePressEvent(QMouseEvent* ev) override;
@@ -200,16 +206,23 @@ public:
      */
     virtual QMenu *buildContextMenu(QMenu *);
 
-public Q_SLOTS:
-	virtual void setVisible(bool visible) override;
+public :
+	CS_SLOT_1(Public, virtual void setVisible(bool visible)override)
+	CS_SLOT_2(setVisible) 
 
-Q_SIGNALS:
-	void activeTabChanged();
-	void clicked();
-	void closeRequested();
-	void closeOtherTabsRequested();
-	void moved(const QPoint& GlobalPos);
-	void elidedChanged(bool elided);
+public:
+	CS_SIGNAL_1(Public, void activeTabChanged())
+	CS_SIGNAL_2(activeTabChanged) 
+	CS_SIGNAL_1(Public, void clicked())
+	CS_SIGNAL_2(clicked) 
+	CS_SIGNAL_1(Public, void closeRequested())
+	CS_SIGNAL_2(closeRequested) 
+	CS_SIGNAL_1(Public, void closeOtherTabsRequested())
+	CS_SIGNAL_2(closeOtherTabsRequested) 
+	CS_SIGNAL_1(Public, void moved(const QPoint & GlobalPos))
+	CS_SIGNAL_2(moved,GlobalPos) 
+	CS_SIGNAL_1(Public, void elidedChanged(bool elided))
+	CS_SIGNAL_2(elidedChanged,elided) 
 }; // class DockWidgetTab
 }
  // namespace ads

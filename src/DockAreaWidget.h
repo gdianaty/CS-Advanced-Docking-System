@@ -58,7 +58,7 @@ class CDockSplitter;
  */
 class ADS_EXPORT CDockAreaWidget : public QFrame
 {
-	Q_OBJECT
+	CS_OBJECT(CDockAreaWidget)
 private:
 	DockAreaWidgetPrivate* d; ///< private data (pimpl)
 	friend struct DockAreaWidgetPrivate;
@@ -72,30 +72,35 @@ private:
 	friend class CAutoHideDockContainer;
 	void onDockWidgetFeaturesChanged();
 
-private Q_SLOTS:
-	void onTabCloseRequested(int Index);
+private :
+	CS_SLOT_1(Private, void onTabCloseRequested(int Index))
+	CS_SLOT_2(onTabCloseRequested) 
 
 	/**
 	 * Reorder the index position of DockWidget at fromIndx to toIndex
 	 * if a tab in the tabbar is dragged from one index to another one
 	 */
-	void reorderDockWidget(int fromIndex, int toIndex);
+	CS_SLOT_1(Private, void reorderDockWidget(int fromIndex,int toIndex))
+	CS_SLOT_2(reorderDockWidget) 
 
 	/*
 	 * Update the auto hide button checked state based on if it's contained in an auto hide container or not
 	 */
-	void updateAutoHideButtonCheckState();
+	CS_SLOT_1(Private, void updateAutoHideButtonCheckState())
+	CS_SLOT_2(updateAutoHideButtonCheckState) 
 
 	/*
 	 * Update the title bar button tooltips
 	 */
-	void updateTitleBarButtonsToolTips();
+	CS_SLOT_1(Private, void updateTitleBarButtonsToolTips())
+	CS_SLOT_2(updateTitleBarButtonsToolTips) 
 
 	/**
 	 * Calculate the auto hide side bar location depending on the dock area
 	 * widget position in the container
 	 */
-	SideBarLocation calculateSideTabBarArea() const;
+	CS_SLOT_1(Private, SideBarLocation calculateSideTabBarArea())
+	CS_SLOT_2(calculateSideTabBarArea) 
 
 protected:
 
@@ -180,8 +185,9 @@ protected:
 	 */
 	void updateTitleBarButtonVisibility(bool IsTopLevel) const;
 
-protected Q_SLOTS:
-	void toggleView(bool Open);
+protected :
+	CS_SLOT_1(Protected, void toggleView(bool Open))
+	CS_SLOT_2(toggleView) 
 
 public:
 	using Super = QFrame;
@@ -194,7 +200,7 @@ public:
 		HideSingleWidgetTitleBar = 0x0001,
 		DefaultFlags = 0x0000
 	};
-	Q_DECLARE_FLAGS(DockAreaFlags, eDockAreaFlag)
+	using DockAreaFlags = QFlags<eDockAreaFlag>;
 
     /**
 	 * Default Constructor
@@ -394,68 +400,78 @@ public:
     bool isTopLevelArea() const;
 
 
-public Q_SLOTS:
+public :
 	/**
 	 * This activates the tab for the given tab index.
 	 * If the dock widget for the given tab is not visible, the this function
 	 * call will make it visible.
 	 */
-	void setCurrentIndex(int index);
+	CS_SLOT_1(Public, void setCurrentIndex(int index))
+	CS_SLOT_2(setCurrentIndex) 
 
 	/**
 	 * Closes the dock area and all dock widgets in this area
 	 */
-	void closeArea();
+	CS_SLOT_1(Public, void closeArea())
+	CS_SLOT_2(closeArea) 
 
 	/**
 	 * Sets the dock area into auto hide mode or into normal mode.
 	 * If the dock area is switched to auto hide mode, then all dock widgets
 	 * that are pinable will be added to the sidebar
 	 */
-	void setAutoHide(bool Enable, SideBarLocation Location = SideBarNone, int TabIndex = -1);
+	CS_SLOT_1(Public, void setAutoHide(bool Enable,SideBarLocation Location = SideBarNone,int TabIndex = -1))
+	CS_SLOT_2(setAutoHide) 
 
 	/**
 	 * Switches the dock area to auto hide mode or vice versa depending on its
 	 * current state.
 	 */
-	void toggleAutoHide(SideBarLocation Location = SideBarNone);
+	CS_SLOT_1(Public, void toggleAutoHide(SideBarLocation Location = SideBarNone))
+	CS_SLOT_2(toggleAutoHide) 
 
     /**
 	 * This function closes all other areas except of this area
 	 */
-	void closeOtherAreas();
+	CS_SLOT_1(Public, void closeOtherAreas())
+	CS_SLOT_2(closeOtherAreas) 
 
 	/**
 	 * Moves the dock area into its own floating widget if the area
 	 * DockWidgetFloatable flag is true
 	 */
-	void setFloating();
+	CS_SLOT_1(Public, void setFloating())
+	CS_SLOT_2(setFloating) 
 
-Q_SIGNALS:
+public:
 	/**
 	 * This signal is emitted when user clicks on a tab at an index.
 	 */
-	void tabBarClicked(int index);
+	CS_SIGNAL_1(Public, void tabBarClicked(int index))
+	CS_SIGNAL_2(tabBarClicked,index) 
 
     /**
      * This signal is emitted when the tab bar's current tab is about to be changed. The new
      * current has the given index, or -1 if there isn't a new one.
      * @param index
      */
-    void currentChanging(int index);
+    CS_SIGNAL_1(Public, void currentChanging(int index))
+    CS_SIGNAL_2(currentChanging,index) 
 
 	/**
 	 * This signal is emitted when the tab bar's current tab changes. The new
 	 * current has the given index, or -1 if there isn't a new one
 	 * @param index
 	 */
-	void currentChanged(int index);
+	CS_SIGNAL_1(Public, void currentChanged(int index))
+	CS_SIGNAL_2(currentChanged,index) 
 
 	/**
 	 * This signal is emitted if the visibility of this dock area is toggled
 	 * via toggle view function
 	 */
-	void viewToggled(bool Open);
+	CS_SIGNAL_1(Public, void viewToggled(bool Open))
+	CS_SIGNAL_2(viewToggled,Open) 
 }; // class DockAreaWidget
 } // namespace ads
 

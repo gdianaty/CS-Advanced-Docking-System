@@ -67,7 +67,7 @@ struct AutoHideDockContainerPrivate;
  */
 class ADS_EXPORT CDockContainerWidget : public QFrame
 {
-	Q_OBJECT
+	CS_OBJECT(CDockContainerWidget)
 private:
 	DockContainerWidgetPrivate* d; ///< private data (pimpl)
     friend class DockContainerWidgetPrivate;
@@ -86,8 +86,9 @@ private:
 	friend AutoHideDockContainerPrivate;
 	friend CAutoHideSideBar;
 
-private Q_SLOTS:
-	void removeFromDockManager();
+private :
+	CS_SLOT_1(Private, void removeFromDockManager())
+	CS_SLOT_2(removeFromDockManager) 
 
 protected:
 	/**
@@ -359,29 +360,33 @@ public:
 	CDockManager* dockManager() const;
 
 
-Q_SIGNALS:
+public:
 	/**
 	 * This signal is emitted if one or multiple dock areas has been added to
 	 * the internal list of dock areas.
 	 * If multiple dock areas are inserted, this signal is emitted only once
 	 */
-	void dockAreasAdded();
+	CS_SIGNAL_1(Public, void dockAreasAdded())
+	CS_SIGNAL_2(dockAreasAdded) 
 
 	/**
 	 * This signal is emitted, if a new auto hide widget has been created.
 	 */
-	void autoHideWidgetCreated(ads::CAutoHideDockContainer* AutoHideWidget);
+	CS_SIGNAL_1(Public, void autoHideWidgetCreated(ads::CAutoHideDockContainer * AutoHideWidget))
+	CS_SIGNAL_2(autoHideWidgetCreated,AutoHideWidget) 
 
 	/**
 	 * This signal is emitted if one or multiple dock areas has been removed
 	 */
-	void dockAreasRemoved();
+	CS_SIGNAL_1(Public, void dockAreasRemoved())
+	CS_SIGNAL_2(dockAreasRemoved) 
 
 	/**
 	 * This signal is emitted if a dock area is opened or closed via
 	 * toggleView() function
 	 */
-	void dockAreaViewToggled(ads::CDockAreaWidget* DockArea, bool Open);
+	CS_SIGNAL_1(Public, void dockAreaViewToggled(ads::CDockAreaWidget * DockArea,bool Open))
+	CS_SIGNAL_2(dockAreaViewToggled,DockArea,Open) 
 }; // class DockContainerWidget
 } // namespace ads
 //-----------------------------------------------------------------------------

@@ -42,7 +42,7 @@ class CDockOverlayCross;
  */
 class ADS_EXPORT CDockOverlay : public QFrame
 {
-	Q_OBJECT
+	CS_OBJECT(CDockOverlay)
 private:
 	DockOverlayPrivate* d; //< private data class
 	friend struct DockOverlayPrivate;
@@ -170,13 +170,21 @@ struct DockOverlayCrossPrivate;
  */
 class CDockOverlayCross : public QWidget
 {
-	Q_OBJECT
-	Q_PROPERTY(QString iconColors READ iconColors WRITE setIconColors)
-	Q_PROPERTY(QColor iconFrameColor READ iconColor WRITE setIconFrameColor)
-	Q_PROPERTY(QColor iconBackgroundColor READ iconColor WRITE setIconBackgroundColor)
-	Q_PROPERTY(QColor iconOverlayColor READ iconColor WRITE setIconOverlayColor)
-	Q_PROPERTY(QColor iconArrowColor READ iconColor WRITE setIconArrowColor)
-	Q_PROPERTY(QColor iconShadowColor READ iconColor WRITE setIconShadowColor)
+	CS_OBJECT(CDockOverlayCross)
+	CS_PROPERTY_READ(iconColors, iconColors)
+	CS_PROPERTY_WRITE(iconColors, setIconColors)
+
+	// Copperspice does not like it when we have overloaded functions in `CS_PROPERTY_READ`, so we have to make unique variants for each one. -Greg
+	CS_PROPERTY_READ(iconFrameColor, iconFrameColor)
+	CS_PROPERTY_WRITE(iconFrameColor, setIconFrameColor)
+	CS_PROPERTY_READ(iconBackgroundColor, iconBackgroundColor)
+	CS_PROPERTY_WRITE(iconBackgroundColor, setIconBackgroundColor)
+	CS_PROPERTY_READ(iconOverlayColor, iconOverlayColor)
+	CS_PROPERTY_WRITE(iconOverlayColor, setIconOverlayColor)
+	CS_PROPERTY_READ(iconArrowColor, iconArrowColor)
+	CS_PROPERTY_WRITE(iconArrowColor, setIconArrowColor)
+	CS_PROPERTY_READ(iconShadowColor, iconShadowColor)
+	CS_PROPERTY_WRITE(iconShadowColor, setIconShadowColor)
 
 public:
 	enum eIconColor
@@ -204,11 +212,20 @@ protected:
      * This is a dummy function for the property system
      */
     QColor iconColor() const {return QColor();}
+    
+	// Copperspice-specific getters to bypass MOC nonsense.
+    QColor iconFrameColor() const { return iconColor(FrameColor); }
+    QColor iconBackgroundColor() const { return iconColor(WindowBackgroundColor); }
+    QColor iconOverlayColor() const { return iconColor(OverlayColor); }
+    QColor iconArrowColor() const { return iconColor(ArrowColor); }
+    QColor iconShadowColor() const { return iconColor(ShadowColor); }
+
     void setIconFrameColor(const QColor& Color) {setIconColor(FrameColor, Color);}
     void setIconBackgroundColor(const QColor& Color) {setIconColor(WindowBackgroundColor, Color);}
     void setIconOverlayColor(const QColor& Color) {setIconColor(OverlayColor, Color);}
     void setIconArrowColor(const QColor& Color) {setIconColor(ArrowColor, Color);}
     void setIconShadowColor(const QColor& Color) {setIconColor(ShadowColor, Color);}
+	
 
 public:
 	/**

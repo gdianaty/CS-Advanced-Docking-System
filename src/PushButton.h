@@ -22,7 +22,7 @@ namespace ads
  */
 class ADS_EXPORT CPushButton : public QPushButton
 {
-    Q_OBJECT
+    CS_OBJECT(CPushButton)
 public:
     enum Orientation {
         Horizontal,

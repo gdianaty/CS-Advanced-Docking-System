@@ -48,12 +48,12 @@ class DockContainerWidgetPrivate;
  */
 class ADS_EXPORT CAutoHideTab : public CPushButton
 {
-    Q_OBJECT
+    CS_OBJECT(CAutoHideTab)
 
-    Q_PROPERTY(int sideBarLocation READ sideBarLocation)
-    Q_PROPERTY(Qt::Orientation orientation READ orientation)
-	Q_PROPERTY(bool activeTab READ isActiveTab)
-	Q_PROPERTY(bool iconOnly READ iconOnly)
+    CS_PROPERTY_READ(sideBarLocation, sideBarLocation)
+    CS_PROPERTY_READ(orientation, orientation)
+	CS_PROPERTY_READ(activeTab, isActiveTab)
+	CS_PROPERTY_READ(iconOnly, iconOnly)
 
 private:
 	AutoHideTabPrivate* d; ///< private data (pimpl)
@@ -65,9 +65,11 @@ private:
 	friend class CDockContainerWidget;
 	friend DockContainerWidgetPrivate;
 
-private Q_SLOTS:
-	void onAutoHideToActionClicked();
-	void onDragHoverDelayExpired();
+private :
+	CS_SLOT_1(Private, void onAutoHideToActionClicked())
+	CS_SLOT_2(onAutoHideToActionClicked) 
+	CS_SLOT_1(Private, void onDragHoverDelayExpired())
+	CS_SLOT_2(onDragHoverDelayExpired) 
 
 protected:
 	void setSideBar(CAutoHideSideBar *SideTabBar);
@@ -148,21 +150,24 @@ public:
 	 */
 	int tabIndex() const;
 
-public Q_SLOTS:
+public :
 	/**
 	 * Set the dock widget floating, if it is floatable
 	 */
-	void setDockWidgetFloating();
+	CS_SLOT_1(Public, void setDockWidgetFloating())
+	CS_SLOT_2(setDockWidgetFloating) 
 
 	/**
 	 * Unpin and dock the auto hide widget
 	 */
-	void unpinDockWidget();
+	CS_SLOT_1(Public, void unpinDockWidget())
+	CS_SLOT_2(unpinDockWidget) 
 
 	/**
 	 * Calls the requestCloseDockWidget() function for the assigned dock widget
 	 */
-	void requestCloseDockWidget();
+	CS_SLOT_1(Public, void requestCloseDockWidget())
+	CS_SLOT_2(requestCloseDockWidget) 
 }; // class AutoHideTab
 }
  // namespace ads

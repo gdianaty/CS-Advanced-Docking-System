@@ -43,7 +43,7 @@ struct DockSplitterPrivate;
  */
 class ADS_EXPORT CDockSplitter : public QSplitter
 {
-	Q_OBJECT
+	CS_OBJECT(CDockSplitter)
 private:
 	DockSplitterPrivate* d;
 	friend struct DockSplitterPrivate;

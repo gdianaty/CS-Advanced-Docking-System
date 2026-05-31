@@ -27,16 +27,17 @@ struct FloatingDragPreviewPrivate;
  */
 class CFloatingDragPreview : public QWidget, public IFloatingWidget
 {
-	Q_OBJECT
+	CS_OBJECT(CFloatingDragPreview)
 private:
 	FloatingDragPreviewPrivate* d;
 	friend struct FloatingDragPreviewPrivate;
 
-private Q_SLOTS:
+private :
 	/**
 	 * Cancel non opaque undocking if application becomes inactive
 	 */
-	void onApplicationStateChanged(Qt::ApplicationState state);
+	CS_SLOT_1(Private, void onApplicationStateChanged(Qt::ApplicationState state))
+	CS_SLOT_2(onApplicationStateChanged) 
 
 protected:
 	/**
@@ -97,12 +98,13 @@ public: // implements IFloatingWidget -----------------------------------------
 	 */
 	void cleanupAutoHideContainerWidget(DockWidgetArea ContainerDropArea);
 
-Q_SIGNALS:
+public:
 	/**
 	 * This signal is emitted, if dragging has been canceled by escape key
 	 * or by active application switching via task manager
 	 */
-	void draggingCanceled();
+	CS_SIGNAL_1(Public, void draggingCanceled())
+	CS_SIGNAL_2(draggingCanceled) 
 };
 
 

@@ -77,7 +77,7 @@ struct AutoHideTabPrivate;
  **/
 class ADS_EXPORT CDockManager : public CDockContainerWidget
 {
-	Q_OBJECT
+	CS_OBJECT(CDockManager)
 private:
 	DockManagerPrivate* d; ///< private data (pimpl)
 	friend struct DockManagerPrivate;
@@ -97,11 +97,12 @@ private:
 	friend CAutoHideTab;
 	friend AutoHideTabPrivate;
 
-public Q_SLOTS:
+public :
 	/**
 	 * Ends the isRestoringFromMinimizedState
 	 */
-	void endLeavingMinimizedState();
+	CS_SLOT_1(Public, void endLeavingMinimizedState())
+	CS_SLOT_2(endLeavingMinimizedState) 
 
 
 protected:
@@ -246,7 +247,7 @@ public:
 		NonOpaqueWithWindowFrame = DefaultNonOpaqueConfig
 		              | DragPreviewHasWindowFrame ///< the default configuration for non opaque operations that show a real window with frame
 	};
-	Q_DECLARE_FLAGS(ConfigFlags, eConfigFlag)
+	using ConfigFlags = QFlags<eConfigFlag>;
 
 
 	/**
@@ -274,7 +275,7 @@ public:
 			                  | AutoHideCloseOnOutsideMouseClick
 
 	};
-    Q_DECLARE_FLAGS(AutoHideFlags, eAutoHideFlag)
+    using AutoHideFlags = QFlags<eAutoHideFlag>;
 
 	/**
 	 * Global configuration parameters that you can set via setConfigParam()
@@ -739,7 +740,7 @@ public:
      * Globally Lock features of all dock widgets to "freeze" the current
      * workspace layout.
      * For example, it is now possible to lock the workspace to avoid
-     * accidentally dragging a docked view. Locking wasn’t possible before.
+     * accidentally dragging a docked view. Locking wasnât possible before.
      * So, users had to manually dock it back to the desired place after
      * each accidental undock.
      * You can use a combination of the following feature flags:
@@ -759,62 +760,71 @@ public:
      */
     void lockDockWidgetFeaturesGlobally(CDockWidget::DockWidgetFeatures Features = CDockWidget::GloballyLockableFeatures);
 
-public Q_SLOTS:
+public :
 	/**
 	 * Opens the perspective with the given name.
 	 */
-	void openPerspective(const QString& PerspectiveName);
+	CS_SLOT_1(Public, void openPerspective(const QString & PerspectiveName))
+	CS_SLOT_2(openPerspective) 
 
 	/**
 	 * Request a focus change to the given dock widget.
 	 * This function only has an effect, if the flag CDockManager::FocusStyling
 	 * is enabled
 	 */
-	void setDockWidgetFocused(CDockWidget* DockWidget);
+	CS_SLOT_1(Public, void setDockWidgetFocused(CDockWidget * DockWidget))
+	CS_SLOT_2(setDockWidgetFocused) 
 
     /**
      * hide CDockManager and all floating widgets (See Issue #380). Calling regular QWidget::hide()
      * hides the CDockManager but not the floating widgets;
      */
-    void hideManagerAndFloatingWidgets();
+    CS_SLOT_1(Public, void hideManagerAndFloatingWidgets())
+    CS_SLOT_2(hideManagerAndFloatingWidgets) 
 
     /**
      * Calls raise() for the widget that hosts this dock manager.
      * This will bring the widget in front of any other application that is running
      */
-    void raise();
+    CS_SLOT_1(Public, void raise())
+    CS_SLOT_2(raise) 
 
-Q_SIGNALS:
+public:
 	/**
 	 * This signal is emitted if the list of perspectives changed.
 	 * The list of perspectives changes if perspectives are added, removed
 	 * or if the perspective list has been loaded
 	 */
-	void perspectiveListChanged();
+	CS_SIGNAL_1(Public, void perspectiveListChanged())
+	CS_SIGNAL_2(perspectiveListChanged) 
 
 	/**
 	 * This signal is emitted if the perspective list has been loaded
 	 */
-	void perspectiveListLoaded();
+	CS_SIGNAL_1(Public, void perspectiveListLoaded())
+	CS_SIGNAL_2(perspectiveListLoaded) 
 
 	/**
 	 * This signal is emitted if perspectives have been removed
 	 */
-	void perspectivesRemoved();
+	CS_SIGNAL_1(Public, void perspectivesRemoved())
+	CS_SIGNAL_2(perspectivesRemoved) 
 
 	/**
 	 * This signal is emitted, if the restore function is called, just before
 	 * the dock manager starts restoring the state.
 	 * If this function is called, nothing has changed yet
 	 */
-	void restoringState();
+	CS_SIGNAL_1(Public, void restoringState())
+	CS_SIGNAL_2(restoringState) 
 
     /**
      * This signal is emitted if the state changed in restoreState.
      * The signal is emitted if the restoreState() function is called or
      * if the openPerspective() function is called
      */
-    void stateRestored();
+    CS_SIGNAL_1(Public, void stateRestored())
+    CS_SIGNAL_2(stateRestored) 
 
     /**
      * This signal is emitted, if the dock manager starts opening a
@@ -824,39 +834,45 @@ Q_SIGNALS:
      * to show some progress indicator or to change the mouse cursor
      * into a busy cursor.
      */
-    void openingPerspective(const QString& PerspectiveName);
+    CS_SIGNAL_1(Public, void openingPerspective(const QString & PerspectiveName))
+    CS_SIGNAL_2(openingPerspective,PerspectiveName) 
 
     /**
      * This signal is emitted if the dock manager finished opening a
      * perspective.
      */
-    void perspectiveOpened(const QString& PerspectiveName);
+    CS_SIGNAL_1(Public, void perspectiveOpened(const QString & PerspectiveName))
+    CS_SIGNAL_2(perspectiveOpened,PerspectiveName) 
 
 	/**
 	 * This signal is emitted, if a new floating widget has been created.
 	 * An application can use this signal to e.g. subscribe to events of
 	 * the newly created window.
 	 */
-	void floatingWidgetCreated(ads::CFloatingDockContainer* FloatingWidget);
+	CS_SIGNAL_1(Public, void floatingWidgetCreated(ads::CFloatingDockContainer * FloatingWidget))
+	CS_SIGNAL_2(floatingWidgetCreated,FloatingWidget) 
 
     /**
      * This signal is emitted, if a new DockArea has been created.
      * An application can use this signal to set custom icons or custom
      * tooltips for the DockArea buttons.
      */
-    void dockAreaCreated(ads::CDockAreaWidget* DockArea);
+    CS_SIGNAL_1(Public, void dockAreaCreated(ads::CDockAreaWidget * DockArea))
+    CS_SIGNAL_2(dockAreaCreated,DockArea) 
 
     /**
      * This signal is emitted if a dock widget has been added to this
      * dock manager instance.
      */
-    void dockWidgetAdded(ads::CDockWidget* DockWidget);
+    CS_SIGNAL_1(Public, void dockWidgetAdded(ads::CDockWidget * DockWidget))
+    CS_SIGNAL_2(dockWidgetAdded,DockWidget) 
 
     /**
      * This signal is emitted just before the given dock widget is removed
      * from the dock manager
      */
-    void dockWidgetAboutToBeRemoved(ads::CDockWidget* DockWidget);
+    CS_SIGNAL_1(Public, void dockWidgetAboutToBeRemoved(ads::CDockWidget * DockWidget))
+    CS_SIGNAL_2(dockWidgetAboutToBeRemoved,DockWidget) 
 
     /**
      * This signal is emitted if a dock widget has been removed with the remove
@@ -864,14 +880,16 @@ Q_SIGNALS:
      * If this signal is emitted, the dock widget has been removed from the
      * docking system but it is not deleted yet.
      */
-    void dockWidgetRemoved(ads::CDockWidget* DockWidget);
+    CS_SIGNAL_1(Public, void dockWidgetRemoved(ads::CDockWidget * DockWidget))
+    CS_SIGNAL_2(dockWidgetRemoved,DockWidget) 
 
     /**
      * This signal is emitted if the focused dock widget changed.
      * Both old and now can be nullptr.
      * The focused dock widget is the one that is highlighted in the GUI
      */
-    void focusedDockWidgetChanged(ads::CDockWidget* old, ads::CDockWidget* now);
+    CS_SIGNAL_1(Public, void focusedDockWidgetChanged(ads::CDockWidget * old,ads::CDockWidget * now))
+    CS_SIGNAL_2(focusedDockWidgetChanged,old,now) 
 }; // class DockManager
 } // namespace ads
 

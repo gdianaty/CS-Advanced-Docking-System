@@ -56,16 +56,17 @@ class CAutoHideSideBar;
  */
 class ADS_EXPORT CDockWidget : public QFrame
 {
-    Q_OBJECT
+    CS_OBJECT(CDockWidget)
 private:
     DockWidgetPrivate* d; ///< private data (pimpl)
     friend struct DockWidgetPrivate;
 
-private Q_SLOTS:
+private :
     /**
      * Adjusts the toolbar icon sizes according to the floating state
      */
-    void setToolbarFloatingStyle(bool topLevel);
+    CS_SLOT_1(Private, void setToolbarFloatingStyle(bool topLevel))
+    CS_SLOT_2(setToolbarFloatingStyle) 
 
 protected:
     friend class CDockContainerWidget;
@@ -168,7 +169,7 @@ public:
         GloballyLockableFeatures = DockWidgetClosable | DockWidgetMovable | DockWidgetFloatable | DockWidgetPinnable,
         NoDockWidgetFeatures = 0x000
     };
-    Q_DECLARE_FLAGS(DockWidgetFeatures, DockWidgetFeature)
+    using DockWidgetFeatures = QFlags<DockWidgetFeature>;
 
     enum eState
     {
@@ -620,12 +621,13 @@ public: // reimplements QFrame -----------------------------------------------
      */
     virtual bool event(QEvent *e) override;
 
-public Q_SLOTS:
+public :
     /**
      * This property controls whether the dock widget is open or closed.
      * The toogleViewAction triggers this slot
      */
-    void toggleView(bool Open = true);
+    CS_SLOT_1(Public, void toggleView(bool Open = true))
+    CS_SLOT_2(toggleView) 
 
     /**
      * Makes this dock widget the current tab in its dock area.
@@ -633,7 +635,8 @@ public Q_SLOTS:
      * to this function will not toggle the view, so if it is closed,
      * nothing will happen
      */
-    void setAsCurrentTab();
+    CS_SLOT_1(Public, void setAsCurrentTab())
+    CS_SLOT_2(setAsCurrentTab) 
 
     /**
      * Brings the dock widget to the front
@@ -642,24 +645,28 @@ public Q_SLOTS:
      * 	- If the dock widget is floating, QWindow::raise() is called.
      * 	This only applies if the dock widget is already open. If closed, does nothing.
      */
-    void raise();
+    CS_SLOT_1(Public, void raise())
+    CS_SLOT_2(raise) 
 
     /**
      * This function will make a docked widget floating
      */
-    void setFloating();
+    CS_SLOT_1(Public, void setFloating())
+    CS_SLOT_2(setFloating) 
 
     /**
      * This function will delete the dock widget and its content from the
      * docking system
      */
-    void deleteDockWidget();
+    CS_SLOT_1(Public, void deleteDockWidget())
+    CS_SLOT_2(deleteDockWidget) 
 
     /**
      * Closes the dock widget.
      * The function forces closing of the dock widget even for CustomCloseHandling.
      */
-    void closeDockWidget();
+    CS_SLOT_1(Public, void closeDockWidget())
+    CS_SLOT_2(closeDockWidget) 
 
     /**
      * Request closing of the dock widget.
@@ -667,7 +674,8 @@ public Q_SLOTS:
      * like clodeDockWidget() but if the flas CustomCloseHandling is set,
      * the function only emits the closeRequested() signal.
      */
-    void requestCloseDockWidget();
+    CS_SLOT_1(Public, void requestCloseDockWidget())
+    CS_SLOT_2(requestCloseDockWidget) 
 
     /**
      * Shows the widget in full-screen mode.
@@ -681,68 +689,79 @@ public Q_SLOTS:
      * between X11 clients and the window manager. ICCCM simply does not
      * understand the concept of non-decorated full-screen windows.
      */
-    void showFullScreen();
+    CS_SLOT_1(Public, void showFullScreen())
+    CS_SLOT_2(showFullScreen) 
 
     /**
      * This function complements showFullScreen() to restore the widget
      * after it has been in full screen mode.
      */
-    void showNormal();
+    CS_SLOT_1(Public, void showNormal())
+    CS_SLOT_2(showNormal) 
 
 	/**
 	 * Sets the dock widget into auto hide mode if this feature is enabled
 	 * via CDockManager::setAutoHideFlags(CDockManager::AutoHideFeatureEnabled)
 	 */
-	void setAutoHide(bool Enable, SideBarLocation Location = SideBarNone, int TabIndex = -1);
+	CS_SLOT_1(Public, void setAutoHide(bool Enable,SideBarLocation Location = SideBarNone,int TabIndex = -1))
+	CS_SLOT_2(setAutoHide) 
 
 	/**
 	 * Switches the dock widget to auto hide mode or vice versa depending on its
 	 * current state.
 	 */
-	void toggleAutoHide(SideBarLocation Location = SideBarNone);
+	CS_SLOT_1(Public, void toggleAutoHide(SideBarLocation Location = SideBarNone))
+	CS_SLOT_2(toggleAutoHide) 
 
 
-Q_SIGNALS:
+public:
     /**
      * This signal is emitted if the dock widget is opened or closed
      */
-    void viewToggled(bool Open);
+    CS_SIGNAL_1(Public, void viewToggled(bool Open))
+    CS_SIGNAL_2(viewToggled,Open) 
 
     /**
      * This signal is emitted if the dock widget is closed
      */
-    void closed();
+    CS_SIGNAL_1(Public, void closed())
+    CS_SIGNAL_2(closed) 
 
     /**
      * This signal is emitted if the window title of this dock widget
      * changed
      */
-    void titleChanged(const QString& Title);
+    CS_SIGNAL_1(Public, void titleChanged(const QString & Title))
+    CS_SIGNAL_2(titleChanged,Title) 
 
     /**
      * This signal is emitted when the floating property changes.
      * The topLevel parameter is true if the dock widget is now floating;
      * otherwise it is false.
      */
-    void topLevelChanged(bool topLevel);
+    CS_SIGNAL_1(Public, void topLevelChanged(bool topLevel))
+    CS_SIGNAL_2(topLevelChanged,topLevel) 
 
     /**
      * This signal is emitted, if close is requested
      */
-    void closeRequested();
+    CS_SIGNAL_1(Public, void closeRequested())
+    CS_SIGNAL_2(closeRequested) 
 
     /**
      * This signal is emitted when the dock widget becomes visible (or invisible).
      * This happens when the widget is hidden or shown, as well as when it is
      * docked in a tabbed dock area and its tab becomes selected or unselected.
      */
-    void visibilityChanged(bool visible);
+    CS_SIGNAL_1(Public, void visibilityChanged(bool visible))
+    CS_SIGNAL_2(visibilityChanged,visible) 
 
     /**
      * This signal is emitted when the features property changes.
      * The features parameter gives the new value of the property.
      */
-    void featuresChanged(ads::CDockWidget::DockWidgetFeatures features);
+    CS_SIGNAL_1(Public, void featuresChanged(ads::CDockWidget::DockWidgetFeatures features))
+    CS_SIGNAL_2(featuresChanged,features) 
 }; // class DockWidget
 } // namespace ads
 

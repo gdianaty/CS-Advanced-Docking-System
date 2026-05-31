@@ -45,7 +45,7 @@ struct ElidingLabelPrivate;
  */
 class ADS_EXPORT CElidingLabel : public QLabel
 {
-	Q_OBJECT
+	CS_OBJECT(CElidingLabel)
 private:
 	ElidingLabelPrivate* d;
 	friend struct ElidingLabelPrivate;
@@ -84,22 +84,25 @@ public: // reimplements QLabel ----------------------------------------------
 	void setText(const QString &text);
 	QString text() const;
 
-Q_SIGNALS:
+public:
 	/**
 	 * This signal is emitted if the user clicks on the label (i.e. pressed
 	 * down then released while the mouse cursor is inside the label)
 	 */
-	void clicked();
+	CS_SIGNAL_1(Public, void clicked())
+	CS_SIGNAL_2(clicked) 
 
 	/**
 	 * This signal is emitted if the user does a double click on the label
 	 */
-	void doubleClicked();
+	CS_SIGNAL_1(Public, void doubleClicked())
+	CS_SIGNAL_2(doubleClicked) 
     
     /**
 	 * This signal is emitted when isElided() state of this label is changed
 	 */
-	void elidedChanged(bool elided);
+	CS_SIGNAL_1(Public, void elidedChanged(bool elided))
+	CS_SIGNAL_2(elidedChanged,elided) 
 }; //class CElidingLabel
 
 } // namespace QtLabb

@@ -56,10 +56,11 @@ class CDockingStateReader;
  */
 class ADS_EXPORT CAutoHideSideBar : public QScrollArea
 {
-    Q_OBJECT
-    Q_PROPERTY(int sideBarLocation READ sideBarLocation)
-    Q_PROPERTY(Qt::Orientation orientation READ orientation)
-    Q_PROPERTY(int spacing READ spacing WRITE setSpacing)
+    CS_OBJECT(CAutoHideSideBar)
+    CS_PROPERTY_READ(sideBarLocation, sideBarLocation)
+    CS_PROPERTY_READ(orientation, orientation)
+    CS_PROPERTY_READ(spacing, spacing)
+    CS_PROPERTY_WRITE(spacing, setSpacing)
 
 private:
     AutoHideSideBarPrivate* d; ///< private data (pimpl)

@@ -103,7 +103,7 @@ public:
  */
 class ADS_EXPORT CFloatingDockContainer : public tFloatingWidgetBase, public IFloatingWidget
 {
-	Q_OBJECT
+	CS_OBJECT(CFloatingDockContainer)
 private:
 	FloatingDockContainerPrivate* d; ///< private data (pimpl)
 	friend struct FloatingDockContainerPrivate;
@@ -118,9 +118,11 @@ private:
 	friend class CDockAreaWidget;
     friend class CFloatingWidgetTitleBar;
 
-private Q_SLOTS:
-	void onDockAreasAddedOrRemoved();
-	void onDockAreaCurrentChanged(int Index);
+private :
+	CS_SLOT_1(Private, void onDockAreasAddedOrRemoved())
+	CS_SLOT_2(onDockAreasAddedOrRemoved) 
+	CS_SLOT_1(Private, void onDockAreaCurrentChanged(int Index))
+	CS_SLOT_2(onDockAreaCurrentChanged) 
 
 protected:
 	/**
@@ -191,11 +193,11 @@ protected: // reimplements QWidget
 	/**
 	 * Native event filter for handling WM_MOVING messages on Windows
 	 */
-#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
+//#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
     virtual bool nativeEvent(const QByteArray &eventType, void *message, long *result) override;
-#else
-    virtual bool nativeEvent(const QByteArray &eventType, void *message, qintptr *result) override;
-#endif
+//#else
+//    virtual bool nativeEvent(const QByteArray &eventType, void *message, qintptr *result) override;
+//#endif
 #endif
 
 

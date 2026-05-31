@@ -55,7 +55,7 @@ using tTitleBarButton = QToolButton;
 */
 class CTitleBarButton : public tTitleBarButton
 {
-	Q_OBJECT
+	CS_OBJECT(CTitleBarButton)
 
 private:
 	bool ShowInTitleBar = true;
@@ -108,22 +108,32 @@ protected:
  */
 class ADS_EXPORT CDockAreaTitleBar : public QFrame
 {
-	Q_OBJECT
+	CS_OBJECT(CDockAreaTitleBar)
 private:
 	DockAreaTitleBarPrivate* d; ///< private data (pimpl)
 	friend struct DockAreaTitleBarPrivate;
 
-private Q_SLOTS:
-	void onTabsMenuAboutToShow();
-	void onCloseButtonClicked();
-	void onAutoHideCloseActionTriggered();
-	void minimizeAutoHideContainer();
-	void onUndockButtonClicked();
-	void onTabsMenuActionTriggered(QAction* Action);
-	void onCurrentTabChanged(int Index);
-	void onAutoHideButtonClicked();
-	void onAutoHideDockAreaActionClicked();
-	void onAutoHideToActionClicked();
+private :
+	CS_SLOT_1(Private, void onTabsMenuAboutToShow())
+	CS_SLOT_2(onTabsMenuAboutToShow) 
+	CS_SLOT_1(Private, void onCloseButtonClicked())
+	CS_SLOT_2(onCloseButtonClicked) 
+	CS_SLOT_1(Private, void onAutoHideCloseActionTriggered())
+	CS_SLOT_2(onAutoHideCloseActionTriggered) 
+	CS_SLOT_1(Private, void minimizeAutoHideContainer())
+	CS_SLOT_2(minimizeAutoHideContainer) 
+	CS_SLOT_1(Private, void onUndockButtonClicked())
+	CS_SLOT_2(onUndockButtonClicked) 
+	CS_SLOT_1(Private, void onTabsMenuActionTriggered(QAction * Action))
+	CS_SLOT_2(onTabsMenuActionTriggered) 
+	CS_SLOT_1(Private, void onCurrentTabChanged(int Index))
+	CS_SLOT_2(onCurrentTabChanged) 
+	CS_SLOT_1(Private, void onAutoHideButtonClicked())
+	CS_SLOT_2(onAutoHideButtonClicked) 
+	CS_SLOT_1(Private, void onAutoHideDockAreaActionClicked())
+	CS_SLOT_2(onAutoHideDockAreaActionClicked) 
+	CS_SLOT_1(Private, void onAutoHideToActionClicked())
+	CS_SLOT_2(onAutoHideToActionClicked) 
 
 protected:
     /**
@@ -157,12 +167,13 @@ protected:
 	 */
 	virtual void resizeEvent(QResizeEvent *event) override;
 
-public Q_SLOTS:
+public :
 	/**
 	 * Call this slot to tell the title bar that it should update the tabs menu
 	 * the next time it is shown.
 	 */
-	void markTabsMenuOutdated();
+	CS_SLOT_1(Public, void markTabsMenuOutdated())
+	CS_SLOT_2(markTabsMenuOutdated) 
 
 
 public:
@@ -263,12 +274,13 @@ public:
      */
     virtual QMenu *buildContextMenu(QMenu *);
 
-Q_SIGNALS:
+public:
 	/**
 	 * This signal is emitted if a tab in the tab bar is clicked by the user
 	 * or if the user clicks on a tab item in the title bar tab menu.
 	 */
-	void tabBarClicked(int index);
+	CS_SIGNAL_1(Public, void tabBarClicked(int index))
+	CS_SIGNAL_2(tabBarClicked,index) 
 }; // class name
 
 }

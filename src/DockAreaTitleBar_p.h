@@ -49,7 +49,7 @@ namespace ads
 */
 class CSpacerWidget : public QWidget
 {
-	Q_OBJECT
+	CS_OBJECT(CSpacerWidget)
 public:
 	using Super = QWidget;
 	CSpacerWidget(QWidget* Parent = nullptr);

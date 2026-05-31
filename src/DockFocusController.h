@@ -25,17 +25,22 @@ class CFloatingDockContainer;
  */
 class ADS_EXPORT CDockFocusController : public QObject
 {
-	Q_OBJECT
+	CS_OBJECT(CDockFocusController)
 private:
 	DockFocusControllerPrivate* d; ///< private data (pimpl)
     friend struct DockFocusControllerPrivate;
 
-private Q_SLOTS:
-	void onApplicationFocusChanged(QWidget *old, QWidget *now);
-	void onFocusWindowChanged(QWindow *focusWindow);
-	void onFocusedDockAreaViewToggled(bool Open);
-	void onStateRestored();
-	void onDockWidgetVisibilityChanged(bool Visible);
+private :
+	CS_SLOT_1(Private, void onApplicationFocusChanged(QWidget * old,QWidget * now))
+	CS_SLOT_2(onApplicationFocusChanged) 
+	CS_SLOT_1(Private, void onFocusWindowChanged(QWindow * focusWindow))
+	CS_SLOT_2(onFocusWindowChanged) 
+	CS_SLOT_1(Private, void onFocusedDockAreaViewToggled(bool Open))
+	CS_SLOT_2(onFocusedDockAreaViewToggled) 
+	CS_SLOT_1(Private, void onStateRestored())
+	CS_SLOT_2(onStateRestored) 
+	CS_SLOT_1(Private, void onDockWidgetVisibilityChanged(bool Visible))
+	CS_SLOT_2(onDockWidgetVisibilityChanged) 
 
 public:
 	using Super = QObject;
@@ -92,11 +97,12 @@ public:
 	 */
 	void setDockWidgetTabPressed(bool Value);
 
-public Q_SLOTS:
+public :
 	/**
 	 * Request a focus change to the given dock widget
 	 */
-	void setDockWidgetFocused(CDockWidget* focusedNow);
+	CS_SLOT_1(Public, void setDockWidgetFocused(CDockWidget * focusedNow))
+	CS_SLOT_2(setDockWidgetFocused) 
 }; // class DockFocusController
 }
  // namespace ads

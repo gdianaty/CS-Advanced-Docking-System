@@ -43,6 +43,8 @@
 
 // QT-Specific macros that we need to define.
 #define QT_FORWARD_DECLARE_CLASS(_className) class _className;
+#define Q_NULLPTR nullptr
+#define Q_DECL_DEPRECATED [[deprecated]]
 
 #if defined(Q_OS_UNIX) && !defined(Q_OS_MACOS)
 #include <xcb/xcb.h>

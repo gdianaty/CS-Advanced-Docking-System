@@ -52,8 +52,8 @@ struct SideTabBarPrivate;
  */
 class ADS_EXPORT CAutoHideDockContainer : public QFrame
 {
-	Q_OBJECT
-    Q_PROPERTY(int sideBarLocation READ sideBarLocation)
+	CS_OBJECT(CAutoHideDockContainer)
+    CS_PROPERTY_READ(sideBarLocation, sideBarLocation)
 private:
 	AutoHideDockContainerPrivate* d; ///< private data (pimpl)
 	friend struct AutoHideDockContainerPrivate;
