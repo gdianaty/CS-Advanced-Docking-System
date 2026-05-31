@@ -31,7 +31,8 @@
 //                                   INCLUDES
 //============================================================================
 #include <QPair>
-#include <QtCore/QtGlobal>
+//#include <QtCore/QtGlobal>
+#include <QGlobal>
 #include <QPixmap>
 #include <QWidget>
 #include <QDebug>
@@ -39,6 +40,9 @@
 #include <QMouseEvent>
 
 #include <iostream>
+
+// QT-Specific macros that we need to define.
+#define QT_FORWARD_DECLARE_CLASS(_className) class _className;
 
 #if defined(Q_OS_UNIX) && !defined(Q_OS_MACOS)
 #include <xcb/xcb.h>
@@ -71,7 +75,7 @@ QT_FORWARD_DECLARE_CLASS(QSplitter)
 
 namespace ads
 {
-Q_NAMESPACE
+//Q_NAMESPACE
 class CDockSplitter;
 
 enum DockWidgetArea
@@ -92,7 +96,7 @@ enum DockWidgetArea
 	AutoHideDockAreas = LeftAutoHideArea | RightAutoHideArea | TopAutoHideArea | BottomAutoHideArea,
 	AllDockAreas = OuterDockAreas | CenterDockWidgetArea
 };
-Q_DECLARE_FLAGS(DockWidgetAreas, DockWidgetArea)
+using DockWidgetAreas = QFlags<DockWidgetArea>;
 
 
 enum eTabIndex
@@ -158,7 +162,7 @@ enum SideBarLocation
 	SideBarBottom,
 	SideBarNone
 };
-Q_ENUMS(SideBarLocation)
+//CS_ENUM(SideBarLocation)
 
 
 namespace internal
@@ -322,11 +326,7 @@ void setToolTip(QObjectPtr obj, const QString &tip)
  */
 inline QPoint globalPositionOf(QMouseEvent* ev)
 {
-#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
-    return ev->globalPosition().toPoint();
-#else
     return ev->globalPos();
-#endif
 }
 
 
