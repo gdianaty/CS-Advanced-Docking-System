@@ -173,4 +173,7 @@ public :
  // namespace ads
 //-----------------------------------------------------------------------------
 
+// Variant bullshit. -Greg
+CS_DECLARE_METATYPE(QPointer<ads::CAutoHideDockContainer>)
+
 #endif

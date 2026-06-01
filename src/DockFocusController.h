@@ -107,5 +107,9 @@ public :
 }
  // namespace ads
 //-----------------------------------------------------------------------------
+
+// Blow me. -Greg
+CS_DECLARE_METATYPE(QPointer<ads::CDockWidget>)
+
 #endif // DockFocusControllerH
 

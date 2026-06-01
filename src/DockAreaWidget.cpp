@@ -307,7 +307,8 @@ struct DockAreaWidgetPrivate
 	 */
 	QAction* dockWidgetTabAction(CDockWidget* DockWidget) const
 	{
-		return qvariant_cast<QAction*>(DockWidget->property({ACTION_PROPERTY}));
+		//return qvariant_cast<QAction*>(DockWidget->property({ACTION_PROPERTY}));
+        return DockWidget->property({ACTION_PROPERTY}).value<QAction*>();
 	}
 
 	/**

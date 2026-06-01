@@ -939,7 +939,8 @@ void DockContainerWidgetPrivate::appendDockAreas(const QList<CDockAreaWidget*> N
 		QObject::connect(DockArea,
 			&CDockAreaWidget::viewToggled,
 			_this,
-			std::bind(&DockContainerWidgetPrivate::onDockAreaViewToggled, this, std::placeholders::_1));
+			//std::bind(&DockContainerWidgetPrivate::onDockAreaViewToggled, this, std::placeholders::_1
+            [this](bool open) { this->onDockAreaViewToggled(open); });
 	}
 }
 
