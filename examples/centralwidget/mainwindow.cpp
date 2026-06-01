@@ -107,19 +107,23 @@ void CMainWindow::createPerspectiveUi()
 
 void CMainWindow::savePerspective()
 {
-	QString PerspectiveName = QInputDialog::getText(this, "Save Perspective", "Enter unique name:");
-	if (PerspectiveName.isEmpty())
-	{
-		return;
-	}
+    QString PerspectiveName = QInputDialog::getText(this, "Save Perspective", "Enter unique name:");
 
-	DockManager->addPerspective(PerspectiveName);
-	QSignalBlocker Blocker(PerspectiveComboBox);
-	PerspectiveComboBox->clear();
-	PerspectiveComboBox->addItems(DockManager->perspectiveNames());
-	PerspectiveComboBox->setCurrentText(PerspectiveName);
+    if (PerspectiveName.isEmpty())
+    {
+        return;
+    }
+
+    DockManager->addPerspective(PerspectiveName);
+
+    const bool WasBlocked = PerspectiveComboBox->blockSignals(true);
+
+    PerspectiveComboBox->clear();
+    PerspectiveComboBox->addItems(DockManager->perspectiveNames());
+    PerspectiveComboBox->setCurrentText(PerspectiveName);
+
+    PerspectiveComboBox->blockSignals(WasBlocked);
 }
-
 
 //============================================================================
 void CMainWindow::closeEvent(QCloseEvent* event)

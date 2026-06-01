@@ -15,7 +15,7 @@ QT_END_NAMESPACE
 
 class CMainWindow : public QMainWindow
 {
-    Q_OBJECT
+    CS_OBJECT(CMainWindow)
 
 public:
     CMainWindow(QWidget *parent = nullptr);
@@ -37,7 +37,8 @@ private:
 
     void createPerspectiveUi();
 
-private slots:
-	void savePerspective();
+private :
+	CS_SLOT_1(Private, void savePerspective())
+	CS_SLOT_2(savePerspective) 
 };
 #endif // MAINWINDOW_H
