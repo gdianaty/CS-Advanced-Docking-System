@@ -177,7 +177,11 @@ void FloatingDragPreviewPrivate::updateDropOverlays(const QPoint &GlobalPos)
 	// all other allowed areas are from the container
 	if (VisibleDockAreas == 1 && DockArea)
 	{
-		AllowedContainerAreas.setFlag(CenterDockWidgetArea, DockArea->allowedAreas().testFlag(CenterDockWidgetArea));
+		//AllowedContainerAreas.setFlag(CenterDockWidgetArea, DockArea->allowedAreas().testFlag(CenterDockWidgetArea));
+        if (DockArea->allowedAreas().testFlag(CenterDockWidgetArea))
+            AllowedContainerAreas |= CenterDockWidgetArea;
+        else
+            AllowedContainerAreas &= ~CenterDockWidgetArea;
 	}
 
 	if (isContentPinnable())

@@ -105,7 +105,7 @@ struct AutoHideTabPrivate
 		QMenu* Menu)
 	{
 		auto Action = Menu->addAction(Title);
-		Action->setProperty(internal::LocationProperty, Location);
+		Action->setProperty({internal::LocationProperty}, Location);
 		QObject::connect(Action, &QAction::triggered, _this, &CAutoHideTab::onAutoHideToActionClicked);
 		Action->setEnabled(Location != _this->sideBarLocation());
 		return Action;
@@ -139,7 +139,7 @@ struct AutoHideTabPrivate
 	IFloatingWidget* createFloatingWidget(T* Widget)
 	{
 		auto w = new CFloatingDragPreview(Widget);
-		_this->connect(w, &CFloatingDragPreview::draggingCanceled, [this]()
+		_this->connect(w, &CFloatingDragPreview::draggingCanceled, _this, [this]()
 		{
 			DragState = DraggingInactive;
 		});
@@ -429,7 +429,7 @@ void CAutoHideTab::unpinDockWidget()
 //===========================================================================
 void CAutoHideTab::onAutoHideToActionClicked()
 {
-	int Location = sender()->property(internal::LocationProperty).toInt();
+	int Location = sender()->property({internal::LocationProperty}).toInt();
 	d->DockWidget->setAutoHide(true, (SideBarLocation)Location);
 }
 
@@ -600,7 +600,7 @@ void CAutoHideTab::onDragHoverDelayExpired()
 
 	// First we check if there is an active auto hide container that is visible
 	// In this case, we collapse it before we open the new one
-	auto v = d->DockWidget->dockManager()->property(PropertyId);
+	auto v = d->DockWidget->dockManager()->property({PropertyId});
 	if (v.isValid())
 	{
 		auto ActiveAutoHideContainer = v.value<QPointer<CAutoHideDockContainer>>();
@@ -612,7 +612,7 @@ void CAutoHideTab::onDragHoverDelayExpired()
 
 	auto AutoHideContainer = d->DockWidget->autoHideDockContainer();
 	AutoHideContainer->collapseView(false);
-	d->DockWidget->dockManager()->setProperty(PropertyId,
+	d->DockWidget->dockManager()->setProperty({PropertyId},
         QVariant::fromValue(QPointer<CAutoHideDockContainer>(AutoHideContainer)));
 }
 

@@ -601,7 +601,11 @@ void FloatingDockContainerPrivate::updateDropOverlays(const QPoint &GlobalPos)
 	// all other allowed areas are from the container
 	if (VisibleDockAreas == 1 && DockArea)
 	{
-		AllowedContainerAreas.setFlag(CenterDockWidgetArea, DockArea->allowedAreas().testFlag(CenterDockWidgetArea));
+		//AllowedContainerAreas.setFlag(CenterDockWidgetArea, DockArea->allowedAreas().testFlag(CenterDockWidgetArea));
+        if (DockArea->allowedAreas().testFlag(CenterDockWidgetArea))
+            AllowedContainerAreas |= CenterDockWidgetArea;
+        else
+            AllowedContainerAreas &= ~CenterDockWidgetArea;
 	}
 
 	if (DockContainer->features().testFlag(CDockWidget::DockWidgetPinnable))
@@ -788,7 +792,7 @@ void CFloatingDockContainer::deleteContent()
 	std::vector<QPointer<ads::CDockAreaWidget>> areas;
 	for (int i = 0; i != dockContainer()->dockAreaCount(); ++i)
 	{
-		areas.push_back( dockContainer()->dockArea(i) );
+		areas.push_back( QPointer<ads::CDockAreaWidget>(dockContainer()->dockArea(i)) );
 	}
 	for (auto area : areas)
 	{
@@ -802,7 +806,7 @@ void CFloatingDockContainer::deleteContent()
 		std::vector<QPointer<QWidget>> deleteWidgets;
 		for (auto widget : area->dockWidgets())
 		{
-			deleteWidgets.push_back(widget);
+            deleteWidgets.push_back(QPointer<QWidget>(widget));
 		}
 		for (auto ptrWdg : deleteWidgets)
 		{
@@ -869,11 +873,7 @@ void CFloatingDockContainer::changeEvent(QEvent *event)
 
 
 #ifdef Q_OS_WIN
-#if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
 bool CFloatingDockContainer::nativeEvent(const QByteArray &eventType, void *message, long *result)
-#else
-bool CFloatingDockContainer::nativeEvent(const QByteArray &eventType, void *message, qintptr *result)
-#endif
 {
 	QWidget::nativeEvent(eventType, message, result);
 	MSG *msg = static_cast<MSG*>(message);

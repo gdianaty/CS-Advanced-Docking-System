@@ -171,7 +171,7 @@ struct DockManagerPrivate
 	{
 		for (auto DockWidget : DockWidgetsMap)
 		{
-			DockWidget->setProperty(internal::DirtyProperty, true);
+			DockWidget->setProperty({internal::DirtyProperty}, true);
 		}
 	}
 
@@ -282,7 +282,7 @@ bool DockManagerPrivate::restoreStateFromXml(const QByteArray &state,  int versi
     }
     ADS_PRINT(s.attributes().value("Version"));
     bool ok;
-    int v = s.attributes().value("Version").toInt(&ok);
+    int v = s.attributes().value("Version").toString().toInt(&ok);
     if (!ok || v > CurrentVersion)
     {
     	return false;
@@ -294,7 +294,7 @@ bool DockManagerPrivate::restoreStateFromXml(const QByteArray &state,  int versi
     // we first test if the attribute exists
     if (!s.attributes().value("UserVersion").isEmpty())
     {
-		v = s.attributes().value("UserVersion").toInt(&ok);
+        v = s.attributes().value("UserVersion").toString().toInt(&ok);
 		if (!ok || v != version)
 		{
 			return false;
@@ -367,7 +367,7 @@ void DockManagerPrivate::restoreDockWidgetsOpenState()
     // toggle view action the next time
     for (auto DockWidget : DockWidgetsMap)
     {
-    	if (DockWidget->property(internal::DirtyProperty).toBool())
+    	if (DockWidget->property({internal::DirtyProperty}).toBool())
     	{
     		// If the DockWidget is an auto hide widget that is not assigned yet,
     		// then we need to delete the auto hide container now
@@ -380,7 +380,7 @@ void DockManagerPrivate::restoreDockWidgetsOpenState()
     	}
     	else
     	{
-    		DockWidget->toggleViewInternal(!DockWidget->property(internal::ClosedProperty).toBool());
+    		DockWidget->toggleViewInternal(!DockWidget->property({internal::ClosedProperty}).toBool());
     	}
     }
 }
@@ -585,7 +585,7 @@ CDockManager::~CDockManager()
 	std::vector<QPointer<ads::CDockAreaWidget>> areas;
 	for (int i = 0; i != dockAreaCount(); ++i)
 	{
-		areas.push_back( dockArea(i) );
+        areas.push_back( QPointer<ads::CDockAreaWidget>(dockArea(i)));
 	}
 	for ( auto area : areas )
 	{
@@ -596,7 +596,7 @@ CDockManager::~CDockManager()
 		std::vector<QPointer<QWidget>> deleteWidgets;
 		for ( auto widget : area->dockWidgets() )
 		{
-			deleteWidgets.push_back(widget);
+            deleteWidgets.push_back(QPointer<QWidget>((widget)));
 		}
 		for ( auto ptrWdg : deleteWidgets)
 		{
@@ -763,7 +763,7 @@ bool CDockManager::isLeavingMinimizedState() const
 //============================================================================
 void CDockManager::registerFloatingWidget(CFloatingDockContainer* FloatingWidget)
 {
-	d->FloatingWidgets.append(FloatingWidget);
+    d->FloatingWidgets.append(QPointer<CFloatingDockContainer>(FloatingWidget));
 	Q_EMIT floatingWidgetCreated(FloatingWidget);
     ADS_PRINT("d->FloatingWidgets.count() " << d->FloatingWidgets.count());
 }
@@ -772,7 +772,7 @@ void CDockManager::registerFloatingWidget(CFloatingDockContainer* FloatingWidget
 //============================================================================
 void CDockManager::removeFloatingWidget(CFloatingDockContainer* FloatingWidget)
 {
-	int removed = d->FloatingWidgets.removeAll(FloatingWidget);
+    int removed = d->FloatingWidgets.removeAll(QPointer<CFloatingDockContainer>(FloatingWidget));
 	Q_ASSERT(removed == 1);
 }
 

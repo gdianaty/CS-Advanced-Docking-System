@@ -15,6 +15,11 @@
 #include <QDebug>
 #include <QStylePainter>
 
+// hack because Copperspice does not have this.
+inline QRect TransposedRect( const QRect& r )
+{
+    return QRect(r.x(), r.y(), r.height(), r.width());
+}
 
 namespace ads
 {
@@ -42,13 +47,14 @@ void CPushButton::paintEvent(QPaintEvent *event)
     {
         painter.rotate(90);
         painter.translate(0, -1 * width());
-        option.rect = option.rect.transposed();
+        //option.rect = option.rect.transposed();
+        option.rect = TransposedRect(option.rect);
     }
     else if (m_Orientation == CPushButton::VerticalBottomToTop)
     {
         painter.rotate(-90);
         painter.translate(-1 * height(), 0);
-        option.rect = option.rect.transposed();
+        option.rect = TransposedRect(option.rect);
     }
 
     painter.drawControl(QStyle::CE_PushButton, option);

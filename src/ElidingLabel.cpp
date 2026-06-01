@@ -163,21 +163,16 @@ void CElidingLabel::resizeEvent(QResizeEvent *event)
 //============================================================================
 QSize CElidingLabel::minimumSizeHint() const
 {
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
-    bool HasPixmap = !pixmap(Qt::ReturnByValue).isNull();
-#else
     bool HasPixmap = (pixmap() != nullptr);
-#endif
+
     if (HasPixmap || d->isModeElideNone())
     {
         return QLabel::minimumSizeHint();
     }
     const QFontMetrics  &fm = fontMetrics();
-    #if (QT_VERSION >= QT_VERSION_CHECK(5, 11, 0))
-        QSize size(fm.horizontalAdvance(d->Text.left(2) + "…"), fm.height());
-    #else
-        QSize size(fm.width(d->Text.left(2) + "…"), fm.height());
-    #endif
+
+    QSize size(fm.width(d->Text.left(2) + "…"), fm.height());
+
     return size;
 }
 
@@ -185,21 +180,16 @@ QSize CElidingLabel::minimumSizeHint() const
 //============================================================================
 QSize CElidingLabel::sizeHint() const
 {
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
-    bool HasPixmap = !pixmap(Qt::ReturnByValue).isNull();
-#else
     bool HasPixmap = (pixmap() != nullptr);
-#endif
+
     if (HasPixmap || d->isModeElideNone())
     {
         return QLabel::sizeHint();
     }
     const QFontMetrics& fm = fontMetrics();
-    #if (QT_VERSION >= QT_VERSION_CHECK(5, 11, 0))
-        QSize size(fm.horizontalAdvance(d->Text), QLabel::sizeHint().height());
-    #else
-        QSize size(fm.width(d->Text), QLabel::sizeHint().height());
-    #endif
+
+    QSize size(fm.width(d->Text), QLabel::sizeHint().height());
+
 	return size;
 }
 

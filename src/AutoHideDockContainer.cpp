@@ -215,7 +215,7 @@ CAutoHideDockContainer::CAutoHideDockContainer(CDockWidget* DockWidget, SideBarL
 	hide(); // auto hide dock container is initially always hidden
 	d->SideTabBarArea = area;
 	d->SideTab = d->componentsFactory()->createDockWidgetSideTab(nullptr);
-	connect(d->SideTab, &CAutoHideTab::pressed, this, &CAutoHideDockContainer::toggleCollapseState);
+	connect(d->SideTab.data(), &CAutoHideTab::pressed, this, &CAutoHideDockContainer::toggleCollapseState);
 	d->DockArea = new CDockAreaWidget(DockWidget->dockManager(), parent);
 	d->DockArea->setObjectName("autoHideDockArea");
 	d->DockArea->setAutoHideDockContainer(this);

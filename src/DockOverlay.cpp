@@ -31,7 +31,7 @@
 #include <QCursor>
 #include <QIcon>
 #include <QLabel>
-#include <QtGlobal>
+#include <QGlobal>
 #include <QDebug>
 #include <QMap>
 #include <QWindow>
@@ -441,7 +441,14 @@ void CDockOverlay::setAllowedAreas(DockWidgetAreas areas)
 void CDockOverlay::setAllowedArea(DockWidgetArea area, bool Enable)
 {
 	auto AreasOld = d->AllowedAreas;
-	d->AllowedAreas.setFlag(area, Enable);
+
+	//TODO: this seems funky. might not work... -Greg
+	if ( Enable )
+        d->AllowedAreas |= area;
+	else
+        d->AllowedAreas &= ~area;
+
+	//d->AllowedAreas.setFlag(area, Enable);
 	if (AreasOld != d->AllowedAreas)
 	{
 		d->Cross->reset();
@@ -951,15 +958,10 @@ void CDockOverlayCross::setIconColors(const QString& Colors)
 		{"Arrow", CDockOverlayCross::ArrowColor},
 		{"Shadow", CDockOverlayCross::ShadowColor}};
 
-#if (QT_VERSION < QT_VERSION_CHECK(5, 14, 0))
-    auto SkipEmptyParts = QString::SkipEmptyParts;
-#else
-    auto SkipEmptyParts = Qt::SkipEmptyParts;
-#endif
-    auto ColorList = Colors.split(' ', SkipEmptyParts);
+    auto ColorList = Colors.split(' ', QStringParser::SkipEmptyParts);
 	for (const auto& ColorListEntry : ColorList)
 	{
-        auto ComponentColor = ColorListEntry.split('=', SkipEmptyParts);
+        auto ComponentColor = ColorListEntry.split('=', QStringParser::SkipEmptyParts);
 		int Component = ColorCompenentStringMap.value(ComponentColor[0], -1);
 		if (Component < 0)
 		{

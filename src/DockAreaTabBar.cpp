@@ -35,7 +35,7 @@
 #include <QDebug>
 #include <QBoxLayout>
 #include <QApplication>
-#include <QtGlobal>
+#include <QGlobal>
 #include <QTimer>
 
 #include "FloatingDockContainer.h"

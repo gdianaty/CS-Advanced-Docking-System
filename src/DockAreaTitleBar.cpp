@@ -166,7 +166,7 @@ struct DockAreaTitleBarPrivate
 		QMenu* Menu)
 	{
 		auto Action = Menu->addAction(Title);
-		Action->setProperty(internal::LocationProperty, Location);
+		Action->setProperty({internal::LocationProperty}, Location);
 		QObject::connect(Action, &QAction::triggered, _this, &CDockAreaTitleBar::onAutoHideToActionClicked);
 		return Action;
 	}
@@ -305,7 +305,7 @@ IFloatingWidget* DockAreaTitleBarPrivate::makeAreaFloating(const QPoint& Offset,
 	else
 	{
 		auto w = new CFloatingDragPreview(DockArea);
-		QObject::connect(w, &CFloatingDragPreview::draggingCanceled, [this]()
+		QObject::connect(w, &CFloatingDragPreview::draggingCanceled, this, [this]()
 		{
 			this->DragState = DraggingInactive;
 		});
@@ -602,7 +602,7 @@ void CDockAreaTitleBar::onAutoHideDockAreaActionClicked()
 //============================================================================
 void CDockAreaTitleBar::onAutoHideToActionClicked()
 {
-	int Location = sender()->property(internal::LocationProperty).toInt();
+	int Location = sender()->property({internal::LocationProperty}).toInt();
 	d->DockArea->toggleAutoHide((SideBarLocation)Location);
 }
 
@@ -984,8 +984,10 @@ bool CTitleBarButton::event(QEvent *ev)
 
 	// force setVisible() call - Calling setVisible() directly here doesn't
 	// work well when button is expected to be shown first time
-	QMetaObject::invokeMethod(this, "setVisible", Qt::QueuedConnection,
-		Q_ARG(bool, isEnabledTo(this->parentWidget()) & Show));
+	//QMetaObject::invokeMethod(this, "setVisible", Qt::QueuedConnection,
+	//	Q_ARG(bool, isEnabledTo(this->parentWidget()) & Show));
+	const bool bVisible = isEnabledTo(parentWidget()) && Show;
+    QMetaObject::invokeMethod(this, "setVisible", Qt::QueuedConnection, CSArgument<bool>(bVisible));
 
 	return Super::event(ev);
 }

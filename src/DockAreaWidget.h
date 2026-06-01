@@ -99,7 +99,8 @@ private :
 	 * Calculate the auto hide side bar location depending on the dock area
 	 * widget position in the container
 	 */
-	CS_SLOT_1(Private, SideBarLocation calculateSideTabBarArea())
+	// Fingers crossed we don't need this... -Greg
+	CS_SLOT_1(Private, SideBarLocation calculateSideTabBarArea() const)
 	CS_SLOT_2(calculateSideTabBarArea) 
 
 protected:

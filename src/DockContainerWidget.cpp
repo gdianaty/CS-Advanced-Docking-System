@@ -41,7 +41,7 @@
 #include <QLabel>
 #include <QTimer>
 #include <QMetaObject>
-#include <QMetaType>
+//#include <QMetaType>
 #include <QApplication>
 
 #include "DockManager.h"
@@ -75,7 +75,8 @@ QByteArray qByteArrayToHex(const QByteArray& src, char separator)
         return QByteArray();
 
     const int length = separator ? (src.size() * 3 - 1) : (src.size() * 2);
-    QByteArray hex(length, Qt::Uninitialized);
+    //QByteArray hex(length, Qt::Uninitialized);
+    QByteArray hex(nullptr, length);
     char *hexData = hex.data();
     const uchar *data = reinterpret_cast<const uchar *>(src.data());
     for (int i = 0, o = 0; i < src.size(); ++i) {
@@ -396,7 +397,7 @@ DockContainerWidgetPrivate::DockContainerWidgetPrivate(CDockContainerWidget* _pu
 	std::fill(std::begin(LastAddedAreaCache),std::end(LastAddedAreaCache), nullptr);
 	DelayedAutoHideTimer.setSingleShot(true);
 	DelayedAutoHideTimer.setInterval(500);
-	QObject::connect(&DelayedAutoHideTimer, &QTimer::timeout, [this](){
+    QObject::connect(&DelayedAutoHideTimer, &QTimer::timeout, _this, [this]() {
 		auto GlobalPos = DelayedAutoHideTab->mapToGlobal(QPoint(0, 0));
 		qApp->sendEvent(DelayedAutoHideTab, new QMouseEvent(QEvent::MouseButtonPress,
 				QPoint(0, 0), GlobalPos, Qt::LeftButton, {Qt::LeftButton}, Qt::NoModifier));
@@ -931,7 +932,7 @@ void DockContainerWidgetPrivate::appendDockAreas(const QList<CDockAreaWidget*> N
 {
 	for (auto *newDockArea : NewDockAreas)
 	{
-		DockAreas.append(newDockArea);
+        DockAreas.append(QPointer<CDockAreaWidget>(newDockArea));
 	}
 	for (auto DockArea : NewDockAreas)
 	{
@@ -1018,7 +1019,7 @@ bool DockContainerWidgetPrivate::restoreSplitter(CDockingStateReader& s,
 	}
 
 	int Orientation = HorizontalSplitter ? Qt::Horizontal : Qt::Vertical;
-	int WidgetCount = s.attributes().value("Count").toInt(&Ok);
+	int WidgetCount = s.attributes().value("Count").toString().toInt(&Ok);
 	if (!Ok)
 	{
 		return false;
@@ -1137,7 +1138,7 @@ bool DockContainerWidgetPrivate::restoreSideBar(CDockingStateReader& s,
 	}
 
 	bool Ok;
-	auto Area = (ads::SideBarLocation)s.attributes().value("Area").toInt(&Ok);
+	auto Area = (ads::SideBarLocation)s.attributes().value("Area").toString().toInt(&Ok);
 	if (!Ok)
 	{
 		return false;
@@ -1157,13 +1158,13 @@ bool DockContainerWidgetPrivate::restoreSideBar(CDockingStateReader& s,
 		}
 
 		bool Ok;
-		bool Closed = s.attributes().value("Closed").toInt(&Ok);
+        bool Closed = s.attributes().value("Closed").toString().toInt(&Ok);
 		if (!Ok)
 		{
 			return false;
 		}
 
-		int Size = s.attributes().value("Size").toInt(&Ok);
+		int Size = s.attributes().value("Size").toString().toInt(&Ok);
 		if (!Ok)
 		{
 			return false;
@@ -1191,8 +1192,8 @@ bool DockContainerWidgetPrivate::restoreSideBar(CDockingStateReader& s,
 			AutoHideContainer = SideBar->insertDockWidget(-1, DockWidget);
 		}
 		AutoHideContainer->setSize(Size);
-        DockWidget->setProperty(internal::ClosedProperty, Closed);
-		DockWidget->setProperty(internal::DirtyProperty, false);
+        DockWidget->setProperty({internal::ClosedProperty}, Closed);
+		DockWidget->setProperty({internal::DirtyProperty}, false);
 	}
 
 	return true;
@@ -1570,7 +1571,7 @@ void CDockContainerWidget::removeDockArea(CDockAreaWidget* area)
 	}
 
 	area->disconnect(this);
-	d->DockAreas.removeAll(area);
+    d->DockAreas.removeAll(QPointer<CDockAreaWidget>(area));
 	auto Splitter = area->parentSplitter();
 
 	// Remove area from parent splitter and recursively hide tree of parent
@@ -1899,7 +1900,7 @@ void CDockContainerWidget::saveState(QXmlStreamWriter& s) const
 //============================================================================
 bool CDockContainerWidget::restoreState(CDockingStateReader& s, bool Testing)
 {
-	bool IsFloating = s.attributes().value("Floating").toInt();
+	bool IsFloating = s.attributes().value("Floating").toString().toInt();
     ADS_PRINT("Restore CDockContainerWidget Floating" << IsFloating);
 
 	QWidget* NewRootSplitter {};
@@ -1918,7 +1919,8 @@ bool CDockContainerWidget::restoreState(CDockingStateReader& s, bool Testing)
 			return false;
 		}
 
-		QByteArray GeometryString = s.readElementText(CDockingStateReader::ErrorOnUnexpectedElement).toLocal8Bit();
+		//QByteArray GeometryString = s.readElementText(CDockingStateReader::ErrorOnUnexpectedElement).toLocal8Bit();
+        QByteArray GeometryString = s.readElementText(CDockingStateReader::ErrorOnUnexpectedElement).toUtf8();
 		QByteArray Geometry = QByteArray::fromHex(GeometryString);
 		if (Geometry.isEmpty())
 		{

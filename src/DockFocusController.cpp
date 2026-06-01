@@ -41,9 +41,9 @@ static const char* const FocusedDockWidgetProperty = "FocusedDockWidget";
 struct DockFocusControllerPrivate
 {
 	CDockFocusController *_this;
-	QPointer<CDockWidget> FocusedDockWidget = nullptr;
-	QPointer<CDockAreaWidget> FocusedArea = nullptr;
-	QPointer<CDockWidget> OldFocusedDockWidget = nullptr;
+    QPointer<CDockWidget> FocusedDockWidget = QPointer<CDockWidget>(nullptr);
+    QPointer<CDockAreaWidget> FocusedArea = QPointer<CDockAreaWidget>(nullptr);
+    QPointer<CDockWidget> OldFocusedDockWidget = QPointer<CDockWidget>(nullptr);
 #if defined(Q_OS_UNIX) && !defined(Q_OS_MACOS)
      QPointer<CFloatingDockContainer> FloatingWidget = nullptr;
 #endif
@@ -130,7 +130,7 @@ void DockFocusControllerPrivate::updateDockWidgetFocus(CDockWidget* DockWidget)
 
 	if (Window)
 	{
-        Window->setProperty(FocusedDockWidgetProperty, QVariant::fromValue(QPointer<CDockWidget>(DockWidget)));
+        Window->setProperty({FocusedDockWidgetProperty}, QVariant::fromValue(QPointer<CDockWidget>(DockWidget)));
 	}
 	CDockAreaWidget* NewFocusedDockArea = nullptr;
 	if (FocusedDockWidget)
@@ -166,7 +166,7 @@ void DockFocusControllerPrivate::updateDockWidgetFocus(CDockWidget* DockWidget)
 
     if (NewFloatingWidget)
     {
-        NewFloatingWidget->setProperty(FocusedDockWidgetProperty, QVariant::fromValue(QPointer<CDockWidget>(DockWidget)));
+        NewFloatingWidget->setProperty({FocusedDockWidgetProperty}, QVariant::fromValue(QPointer<CDockWidget>(DockWidget)));
     }
 
 
@@ -248,7 +248,7 @@ void CDockFocusController::onFocusWindowChanged(QWindow *focusWindow)
 		return;
 	}
 
-    auto vDockWidget = focusWindow->property(FocusedDockWidgetProperty);
+    auto vDockWidget = focusWindow->property({FocusedDockWidgetProperty});
 	if (!vDockWidget.isValid())
 	{
 		return;
@@ -391,7 +391,7 @@ void CDockFocusController::notifyFloatingWidgetDrop(CFloatingDockContainer* Floa
 		return;
 	}
 
-    auto vDockWidget = FloatingWidget->property(FocusedDockWidgetProperty);
+    auto vDockWidget = FloatingWidget->property({FocusedDockWidgetProperty});
 	if (!vDockWidget.isValid())
 	{
 		return;

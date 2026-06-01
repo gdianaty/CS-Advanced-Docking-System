@@ -169,7 +169,7 @@ struct DockWidgetTabPrivate
 		else
 		{
 			auto w = new CFloatingDragPreview(Widget);
-			_this->connect(w, &CFloatingDragPreview::draggingCanceled, [this]()
+            _this->connect(w, &CFloatingDragPreview::draggingCanceled, _this, [this]()
 			{
 				DragState = DraggingInactive;
 			});
@@ -223,7 +223,7 @@ struct DockWidgetTabPrivate
 		QMenu* Menu)
 	{
 		auto Action = Menu->addAction(Title);
-		Action->setProperty(internal::LocationProperty, Location);
+		Action->setProperty({internal::LocationProperty}, Location);
 		QObject::connect(Action, &QAction::triggered, _this, &CDockWidgetTab::onAutoHideToActionClicked);
 		return Action;
 	}
@@ -770,7 +770,7 @@ void CDockWidgetTab::autoHideDockWidget()
 //===========================================================================
 void CDockWidgetTab::onAutoHideToActionClicked()
 {
-	int Location = sender()->property(internal::LocationProperty).toInt();
+	int Location = sender()->property({internal::LocationProperty}).toInt();
 	d->DockWidget->toggleAutoHide((SideBarLocation)Location);
 }
 

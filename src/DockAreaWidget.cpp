@@ -113,7 +113,7 @@ public:
 		{
 			index = m_Widgets.count();
 		}
-		m_Widgets.insert(index, Widget);
+		m_Widgets.insert(index, QPointer<QWidget>(Widget));
 		if (m_CurrentIndex < 0)
 		{
 			setCurrentIndex(index);
@@ -147,7 +147,7 @@ public:
 		{
 			--m_CurrentIndex;
 		}
-		m_Widgets.removeOne(Widget);
+        m_Widgets.removeOne(QPointer<QWidget>(Widget));
 	}
 
 	/**
@@ -225,7 +225,7 @@ public:
 	 */
 	int indexOf(QWidget* w) const
 	{
-		return m_Widgets.indexOf(w);
+        return m_Widgets.indexOf(QPointer<QWidget>(w));
 	}
 
 	/**
@@ -307,7 +307,7 @@ struct DockAreaWidgetPrivate
 	 */
 	QAction* dockWidgetTabAction(CDockWidget* DockWidget) const
 	{
-		return qvariant_cast<QAction*>(DockWidget->property(ACTION_PROPERTY));
+		return qvariant_cast<QAction*>(DockWidget->property({ACTION_PROPERTY}));
 	}
 
 	/**
@@ -315,7 +315,7 @@ struct DockAreaWidgetPrivate
 	 */
 	int dockWidgetIndex(CDockWidget* DockWidget) const
 	{
-		return DockWidget->property(INDEX_PROPERTY).toInt();
+		return DockWidget->property({INDEX_PROPERTY}).toInt();
 	}
 
 	/**
@@ -549,7 +549,7 @@ void CDockAreaWidget::insertDockWidget(int index, CDockWidget* DockWidget,
 	d->tabBar()->blockSignals(false);
 	TabWidget->setVisible(!DockWidget->isClosed());
 	d->TitleBar->autoHideTitleLabel()->setText(DockWidget->windowTitle());
-	DockWidget->setProperty(INDEX_PROPERTY, index);
+	DockWidget->setProperty({INDEX_PROPERTY}, index);
 	d->MinSizeHint.setHeight(qMax(d->MinSizeHint.height(), DockWidget->minimumSizeHint().height()));
 	d->MinSizeHint.setWidth(qMax(d->MinSizeHint.width(), DockWidget->minimumSizeHint().width()));
 	if (Activate)
@@ -1036,13 +1036,13 @@ bool CDockAreaWidget::restoreState(CDockingStateReader& s, CDockAreaWidget*& Cre
 		const auto AllowedAreasAttribute = s.attributes().value("AllowedAreas");
 		if (!AllowedAreasAttribute.isEmpty())
 		{
-			DockArea->setAllowedAreas((DockWidgetArea)AllowedAreasAttribute.toInt(nullptr, 16));
+			DockArea->setAllowedAreas((DockWidgetArea)AllowedAreasAttribute.toString().toInt(nullptr, 16));
 		}
 
 		const auto FlagsAttribute = s.attributes().value("Flags");
 		if (!FlagsAttribute.isEmpty())
 		{
-			DockArea->setDockAreaFlags((CDockAreaWidget::DockAreaFlags)FlagsAttribute.toInt(nullptr, 16));
+			DockArea->setDockAreaFlags((CDockAreaWidget::DockAreaFlags)FlagsAttribute.toString().toInt(nullptr, 16));
 		}
 	}
 
@@ -1059,7 +1059,7 @@ bool CDockAreaWidget::restoreState(CDockingStateReader& s, CDockAreaWidget*& Cre
 			return false;
 		}
 
-		bool Closed = s.attributes().value("Closed").toInt(&Ok);
+		bool Closed = s.attributes().value("Closed").toString().toInt(&Ok);
 		if (!Ok)
 		{
 			return false;
@@ -1084,8 +1084,8 @@ bool CDockAreaWidget::restoreState(CDockingStateReader& s, CDockAreaWidget*& Cre
         DockArea->addDockWidget(DockWidget);
 		DockWidget->setToggleViewActionChecked(!Closed);
 		DockWidget->setClosedState(Closed);
-		DockWidget->setProperty(internal::ClosedProperty, Closed);
-		DockWidget->setProperty(internal::DirtyProperty, false);
+		DockWidget->setProperty({internal::ClosedProperty}, Closed);
+		DockWidget->setProperty({internal::DirtyProperty}, false);
 	}
 
 	if (Testing)
