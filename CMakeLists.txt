@@ -36,7 +36,7 @@ else()
 endif()
 
 
-project(QtADS LANGUAGES CXX VERSION ${VERSION_SHORT})
+project(CsADS LANGUAGES CXX VERSION ${VERSION_SHORT})
 
 option(BUILD_STATIC "Build the static library" OFF)
 option(BUILD_EXAMPLES "Build the examples" ON)

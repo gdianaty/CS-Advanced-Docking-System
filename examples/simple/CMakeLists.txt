@@ -20,11 +20,11 @@ add_executable(SimpleExample
 )
 
 #target_include_directories(SimpleExample PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../../src")
-#target_link_libraries(SimpleExample PRIVATE qtadvanceddocking-copperspice)
+#target_link_libraries(SimpleExample PRIVATE csadvanceddocking)
 #target_link_libraries(SimpleExample PUBLIC CopperSpice::CsCore CopperSpice::CsGui)
 
 target_link_libraries(SimpleExample PRIVATE
-    qtadvanceddocking-copperspice
+    csadvanceddocking
     CopperSpice::CsCore
     CopperSpice::CsGui
 )

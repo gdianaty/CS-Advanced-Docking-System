@@ -276,7 +276,7 @@ bool DockManagerPrivate::restoreStateFromXml(const QByteArray &state,  int versi
     }
     CDockingStateReader s(state);
     s.readNextStartElement();
-    if (s.name() != QLatin1String("QtAdvancedDockingSystem"))
+    if (s.name() != QLatin1String("CsAdvancedDockingSystem"))
     {
     	return false;
     }
@@ -842,7 +842,7 @@ QByteArray CDockManager::saveState(int version) const
     auto ConfigFlags = CDockManager::configFlags();
 	s.setAutoFormatting(ConfigFlags.testFlag(XmlAutoFormattingEnabled));
     s.writeStartDocument();
-		s.writeStartElement("QtAdvancedDockingSystem");
+		s.writeStartElement("CsAdvancedDockingSystem");
 		s.writeAttribute("Version", QString::number(CurrentVersion));
 		s.writeAttribute("UserVersion", QString::number(version));
 		s.writeAttribute("Containers", QString::number(d->Containers.count()));

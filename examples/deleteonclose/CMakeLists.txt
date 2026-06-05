@@ -6,7 +6,7 @@ add_executable(DeleteOnCloseTest WIN32
     main.cpp
 )
 target_include_directories(DeleteOnCloseTest PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../../src")
-target_link_libraries(DeleteOnCloseTest PRIVATE qtadvanceddocking-qt${QT_VERSION_MAJOR})
+target_link_libraries(DeleteOnCloseTest PRIVATE csadvanceddocking-qt${QT_VERSION_MAJOR})
 target_link_libraries(DeleteOnCloseTest PUBLIC CopperSpice)
 set_target_properties(DeleteOnCloseTest PROPERTIES 
     #AUTOMOC ON

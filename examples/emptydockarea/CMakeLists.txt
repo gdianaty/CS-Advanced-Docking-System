@@ -10,7 +10,7 @@ add_executable(EmptyDockAreaExample WIN32
     mainwindow.ui
 )
 target_include_directories(EmptyDockAreaExample PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../../src")
-target_link_libraries(EmptyDockAreaExample PRIVATE qtadvanceddocking-qt${QT_VERSION_MAJOR})
+target_link_libraries(EmptyDockAreaExample PRIVATE csadvanceddocking-qt${QT_VERSION_MAJOR})
 target_link_libraries(EmptyDockAreaExample PUBLIC CopperSpice)
 set_target_properties(EmptyDockAreaExample PROPERTIES 
     #AUTOMOC ON

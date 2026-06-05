@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(QtAdvancedDockingSystem LANGUAGES CXX VERSION ${VERSION_SHORT})
+project(CsAdvancedDockingSystem LANGUAGES CXX VERSION ${VERSION_SHORT})
 include(GNUInstallDirs)
 include(Versioning)
 find_package(CopperSpice REQUIRED COMPONENTS Core Gui Xml)
@@ -64,7 +64,7 @@ ads_collect_generated_sources(ads_generated_sources ${ads_SRCS})
 list(REMOVE_ITEM ads_SRCS ads.qrc)
 list(APPEND ads_SRCS ${ads_generated_sources})
 
-set(library_name "qtadvanceddocking-copperspice")
+set(library_name "csadvanceddocking")
 if(BUILD_STATIC)
     add_library(${library_name} STATIC ${ads_SRCS} ${ads_HEADERS})
     target_compile_definitions( ${library_name} PUBLIC ADS_STATIC)
@@ -123,7 +123,7 @@ install(EXPORT adsTargets
     NAMESPACE ads::
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${library_name}
 )
-install(FILES qtadvanceddockingConfig.cmake RENAME ${library_name}Config.cmake
+install(FILES csadvanceddockingConfig.cmake RENAME ${library_name}Config.cmake
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${library_name}
 )
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${library_name}ConfigVersion.cmake"

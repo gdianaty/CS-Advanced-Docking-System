@@ -10,7 +10,7 @@ add_executable(HideShowExample WIN32
     MainWindow.ui
 )
 target_include_directories(HideShowExample PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../../src")
-target_link_libraries(HideShowExample PRIVATE qtadvanceddocking-qt${QT_VERSION_MAJOR})
+target_link_libraries(HideShowExample PRIVATE csadvanceddocking-qt${QT_VERSION_MAJOR})
 target_link_libraries(HideShowExample PUBLIC CopperSpice)
 set_target_properties(HideShowExample PROPERTIES 
     #AUTOMOC ON

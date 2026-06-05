@@ -20,11 +20,11 @@ add_executable(CentralWidgetExample
 )
 
 #target_include_directories(CentralWidgetExample PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../../src")
-#target_link_libraries(CentralWidgetExample PRIVATE qtadvanceddocking-qt${QT_VERSION_MAJOR})
+#target_link_libraries(CentralWidgetExample PRIVATE csadvanceddocking-qt${QT_VERSION_MAJOR})
 #target_link_libraries(CentralWidgetExample PUBLIC CopperSpice)
 
 target_link_libraries(CentralWidgetExample PRIVATE
-    qtadvanceddocking-copperspice
+    csadvanceddocking
     CopperSpice::CsCore
     CopperSpice::CsGui
 )
