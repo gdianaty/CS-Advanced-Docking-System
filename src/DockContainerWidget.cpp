@@ -562,7 +562,17 @@ void CDockContainerWidget::showDropOverlays(CDockManager* DockManager,
 	// all other allowed areas are from the container
 	if (VisibleDockAreas == 1 && DockArea)
 	{
-		AllowedContainerAreas.setFlag(CenterDockWidgetArea, DockArea->allowedAreas().testFlag(CenterDockWidgetArea));
+		// COPPERSPICE: Why doesn't CS have setFlag??? should I just PR mainline CS for this???- Graham
+
+		// AllowedContainerAreas.setFlag(CenterDockWidgetArea,  DockArea->allowedAreas().testFlag(CenterDockWidgetArea));
+        if (DockArea->allowedAreas().testFlag(CenterDockWidgetArea))
+        {
+            AllowedContainerAreas |= CenterDockWidgetArea;
+        }
+        else
+        {
+            AllowedContainerAreas &= ~CenterDockWidgetArea;
+        }
 	}
 
 	if (ContentPinnable)
@@ -1634,11 +1644,7 @@ bool CDockContainerWidget::event(QEvent *e)
  */
 static QPoint dropEventGlobalPos(QDropEvent* e, QWidget* Widget)
 {
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-	return Widget->mapToGlobal(e->position().toPoint());
-#else
 	return Widget->mapToGlobal(e->pos());
-#endif
 }
 
 
